@@ -8,6 +8,7 @@ import com.harunerenozkaya.portfolio.repository.ExperienceRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ExperienceService {
@@ -46,7 +48,7 @@ public class ExperienceService {
         Experience experience = experienceRepository.findById(id).orElse(null);
         if (experience == null) {
             logger.error("Experience not found with id: {}", id);
-            throw new RuntimeException("Experience not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Experience not found");
         }
         ExperienceDto experienceDto = modelMapper.map(experience, ExperienceDto.class);
         logger.info("Retrieved experience: {}", experienceDto);
@@ -67,7 +69,7 @@ public class ExperienceService {
 
         Experience experience = experienceRepository.findById(id).orElseThrow(() -> {
             logger.error("Experience not found with id: {}", id);
-            return new RuntimeException("Experience not found");
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Experience not found");
         });
 
         modelMapper.map(updatedExperienceModel, experience);
@@ -83,7 +85,7 @@ public class ExperienceService {
         Experience experience = experienceRepository.findById(id).orElse(null);
         if (experience == null) {
             logger.error("Experience not found with id: {}", id);
-            throw new RuntimeException("Experience not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Experience not found");
         }
         experienceRepository.delete(experience);
         logger.info("Deleted experience with id: {}", id);

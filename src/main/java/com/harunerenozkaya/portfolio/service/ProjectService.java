@@ -8,6 +8,7 @@ import com.harunerenozkaya.portfolio.repository.ProjectRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProjectService {
@@ -46,7 +48,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> {
                 logger.error("Project not found with id: {}", id);
-                return new RuntimeException("Project not found");
+                return new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
             });
         ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
         logger.info("Retrieved project: {}", projectDto);
@@ -67,7 +69,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> {
                 logger.error("Project not found with id: {}", id);
-                return new RuntimeException("Project not found");
+                return new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
             });
         modelMapper.map(projectRequestModel, project);
         Project updatedProject = projectRepository.save(project);
@@ -81,7 +83,7 @@ public class ProjectService {
         Project project = projectRepository.findById(id)
             .orElseThrow(() -> {
                 logger.error("Project not found with id: {}", id);
-                return new RuntimeException("Project not found");
+                return new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found");
             });
         projectRepository.delete(project);
         logger.info("Deleted project with id: {}", id);

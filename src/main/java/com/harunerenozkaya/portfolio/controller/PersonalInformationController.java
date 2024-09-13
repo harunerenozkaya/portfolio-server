@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/v1/personal-information/")
+@RequestMapping("/api/v1/personal-information")
 @Tag(name = "Personal Information Management System", description = "Operations pertaining to personal information in the Portfolio application")
 public class PersonalInformationController {
 
