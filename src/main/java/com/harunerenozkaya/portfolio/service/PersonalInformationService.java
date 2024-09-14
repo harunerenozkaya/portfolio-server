@@ -46,35 +46,16 @@ public class PersonalInformationService {
     public PersonalInformationDto updatePersonalInformation(PersonalInformationDto personalInformationDto) {
         logger.info("Updating personal information");
 
-        // Retrieve existing personal information or throw a 404 exception
-        PersonalInformation existingPersonalInformation = personalInformationRepository.findAll().stream().findFirst()
-                .orElseThrow(() -> {
-                    logger.error("Personal Information not found for update");
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Personal Information not found for update");
-                });
+        // Clear current personal information
+        personalInformationRepository.deleteAll();
 
-        // Handle the socialMediaLinks collection to avoid orphan removal issues
-        if (personalInformationDto.getSocialMediaLinks() != null) {
-            // Clear the current list and replace with the updated social media links from DTO
-            existingPersonalInformation.getSocialMediaLinks().clear();
-            existingPersonalInformation.getSocialMediaLinks().addAll(
-                    personalInformationDto.getSocialMediaLinks().stream()
-                            .map(linkDto -> modelMapper.map(linkDto, SocialMediaLink.class))
-                            .collect(Collectors.toList())
-            );
-        }
+        // Save updated personal information
+        PersonalInformation personalInformation = modelMapper.map(personalInformationDto, PersonalInformation.class);
+        PersonalInformation savedPersonalInformation = personalInformationRepository.save(personalInformation);
+        PersonalInformationDto savedDto = modelMapper.map(savedPersonalInformation, PersonalInformationDto.class);
 
-        // Map the rest of the properties from the DTO to the existing entity
-        modelMapper.map(personalInformationDto, existingPersonalInformation);
-
-        // Save the updated personal information entity
-        PersonalInformation updatedPersonalInformation = personalInformationRepository.save(existingPersonalInformation);
-
-        // Map the updated entity back to DTO and return
-        PersonalInformationDto updatedDto = modelMapper.map(updatedPersonalInformation, PersonalInformationDto.class);
-
-        logger.info("Personal information updated successfully");
-        return updatedDto;
+        logger.info("Updated personal information");
+        return savedDto;
     }
 
     public PersonalInformationDto createPersonalInformation(PersonalInformationDto personalInformationDto) {
