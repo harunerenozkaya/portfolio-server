@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/v1/projects/")
+@RequestMapping("/api/v1/project")
 @Tag(name = "Project Management System", description = "Operations pertaining to projects in the Portfolio application")
 public class ProjectController {
 
