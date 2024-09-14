@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class LoginController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully logged in"),
     })
-    @GetMapping("")
+    @PostMapping("")
     public ResponseEntity login() {
         return ResponseEntity.ok("Login successful");
     }
