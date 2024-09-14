@@ -2,7 +2,6 @@ package com.harunerenozkaya.portfolio.service;
 
 import com.harunerenozkaya.portfolio.dto.PersonalInformationDto;
 import com.harunerenozkaya.portfolio.model.PersonalInformation;
-import com.harunerenozkaya.portfolio.model.SocialMediaLink;
 import com.harunerenozkaya.portfolio.repository.PersonalInformationRepository;
 
 import org.modelmapper.ModelMapper;
@@ -12,9 +11,6 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonalInformationService {

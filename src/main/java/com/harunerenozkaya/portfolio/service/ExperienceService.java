@@ -43,18 +43,6 @@ public class ExperienceService {
         return experienceDtos;
     }
 
-    public ExperienceDto getExperienceById(Long id) {
-        logger.info("Fetching experience with id: {}", id);
-        Experience experience = experienceRepository.findById(id).orElse(null);
-        if (experience == null) {
-            logger.error("Experience not found with id: {}", id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Experience not found");
-        }
-        ExperienceDto experienceDto = modelMapper.map(experience, ExperienceDto.class);
-        logger.info("Retrieved experience: {}", experienceDto);
-        return experienceDto;
-    }
-
     public ExperienceDto createExperience(CreateExperienceRequestModel experience) {
         logger.info("Creating new experience: {}", experience);
         Experience experienceEntity = modelMapper.map(experience, Experience.class);
@@ -73,9 +61,13 @@ public class ExperienceService {
         });
 
         modelMapper.map(updatedExperienceModel, experience);
-        experienceRepository.save(experience);
 
-        ExperienceDto updatedExperienceDto = modelMapper.map(experience, ExperienceDto.class);
+        experience.getUsedSkills().clear();
+        experience.getUsedSkills().addAll(updatedExperienceModel.getUsedSkills());
+
+        Experience updatedExperience = experienceRepository.save(experience);
+
+        ExperienceDto updatedExperienceDto = modelMapper.map(updatedExperience, ExperienceDto.class);
         logger.info("Updated experience: {}", updatedExperienceDto);
         return updatedExperienceDto;
     }
